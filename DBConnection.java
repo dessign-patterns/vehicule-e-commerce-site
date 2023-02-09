@@ -8,6 +8,9 @@ public class DBConnection {
     private Connection connection = null;
     private Statement statement = null;
 
+    public Connection getConnection(){
+        return connection;
+    }
     public void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -15,11 +18,11 @@ public class DBConnection {
             statement = connection.createStatement();
             System.out.println("Connexion a " + DBPath + " avec succès");
 
-            statement.executeUpdate("drop table if exists automobile");
-            statement.executeUpdate("create table automobile (id integer, modele string, couleur string, puissance string, espace string)");
+            // statement.executeUpdate("drop table if exists automobile");
+            statement.executeUpdate("create table automobile (id integer, modele string, couleur string, puissance string, espace string, type string)");
 
-            statement.executeUpdate("drop table if exists scooter");
-            statement.executeUpdate("create table scooter (id integer, modele string, couleur string, puissance string)");
+            // statement.executeUpdate("drop table if exists scooter");
+            statement.executeUpdate("create table scooter (id integer, modele string, couleur string, puissance string, type string)");
         } catch (ClassNotFoundException notFoundException) {
             notFoundException.printStackTrace();
             System.out.println("Erreur de connection 1");
