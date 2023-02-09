@@ -19,13 +19,16 @@ public class DBConnection {
             System.out.println("Connexion a " + DBPath + " avec succès");
 
             statement.executeUpdate("drop table if exists automobile");
-            statement.executeUpdate("create table automobile (id integer, modele string, couleur string, puissance string, espace string, type string)");
+            statement.executeUpdate("create table automobile (id integer, modele string, couleur string, puissance string, espace string, type string, catalogue string)");
 
             statement.executeUpdate("drop table if exists scooter");
-            statement.executeUpdate("create table scooter (id integer, modele string, couleur string, puissance string, type string)");
+            statement.executeUpdate("create table scooter (id integer, modele string, couleur string, puissance string, type string, catalogue string)");
             
             statement.executeUpdate("drop table if exists commande");
             statement.executeUpdate("create table commande (id integer, vehicule string, montant double, etat string)");
+
+            statement.executeUpdate("drop table if exists catalogue");
+            statement.executeUpdate("create table catalogue (id integer, nom string)");
 
         } catch (ClassNotFoundException notFoundException) {
             notFoundException.printStackTrace();

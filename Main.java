@@ -15,6 +15,19 @@ public class Main{
         int choice = 0;
 		Scanner number = new Scanner(System.in);
 		Liasse liasseUnique = null;
+		
+		double i; 
+		try{
+			Statement s = db.getConnection().createStatement();
+			for (int j = 1; j <5; j++) {
+				i = Math.random() * ( 5 - 1 );
+				s.executeUpdate("INSERT INTO catalogue (id, nom)"+" VALUES("+j+", 'Catalogue"+j+"');");
+			}
+		}catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+			System.out.println("Erreur de connection");
+		}
+
 		do {
 			System.out.println("-+-+-+-+-+-+-+-+-+-+-+-+ vehicles e-commerce site +-+-+-+-+-+-+-+-+-+-+-+- ");
 			System.out.println("1. Creer un vehicule (automobile / scooter) ");
@@ -136,8 +149,9 @@ public class Main{
 					
 					try{
 						double id = Math.random() * ( 100000000 - 1 );
+						double i = Math.random() * (5-1);
 						s = c.createStatement();
-						s.executeUpdate("INSERT INTO AUTOMOBILE (id, modele, couleur, puissance, espace, type)"+" VALUES("+id+", 'Peugeot 307', 'gris', 320, 5, 'electrique');");
+						s.executeUpdate("INSERT INTO AUTOMOBILE (id, modele, couleur, puissance, espace, type, catalogue)"+" VALUES("+id+", 'Peugeot 307', 'gris', 320, 5, 'electrique',"+((int)i)+");");
 					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
 					} catch (SQLException sqlException) {
 						sqlException.printStackTrace();
@@ -152,8 +166,9 @@ public class Main{
 					
 					try{
 						double id = Math.random() * ( 100000000 - 1 );
+						double i = Math.random() * (5-1);
 						s = c.createStatement();
-						s.executeUpdate("INSERT INTO AUTOMOBILE (id, modele, couleur, puissance, espace, type)"+" VALUES("+id+", 'Peugeot 307', 'gris', 320, 5, 'essence');");
+						s.executeUpdate("INSERT INTO AUTOMOBILE (id, modele, couleur, puissance, espace, type, catalogue)"+" VALUES("+id+", 'Peugeot 307', 'gris', 320, 5, 'essence',"+((int)i)+");");
 					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
 					}catch (SQLException sqlException) {
 						sqlException.printStackTrace();
@@ -197,8 +212,9 @@ public class Main{
 					
 					try{
 						double id = Math.random() * ( 100000000 - 1 );
+						double i = Math.random() * ( 5 - 1 );
 						s = c.createStatement();
-						s.executeUpdate("INSERT INTO Scooter (id, modele, couleur, puissance, type)"+" VALUES("+id+", 'Toyota v4', 'Jaune', 210, 'electrique');");
+						s.executeUpdate("INSERT INTO Scooter (id, modele, couleur, puissance, type, catalogue)"+" VALUES("+id+", 'Toyota v4', 'Jaune', 210, 'electrique', "+((int)i)+");");
 					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
 					}catch (SQLException sqlException) {
 						sqlException.printStackTrace();
@@ -214,8 +230,9 @@ public class Main{
 					
 					try{
 						double id = Math.random() * ( 100000000 - 1 );
+						double i = Math.random() * ( 5 - 1 );
 						s = c.createStatement();
-						s.executeUpdate("INSERT INTO SCOOTER (id, modele, couleur, puissance, type)"+" VALUES("+id+", 'Toyota v4', 'Rouge', 210, 'essence');");
+						s.executeUpdate("INSERT INTO SCOOTER (id, modele, couleur, puissance, type, catalogue)"+" VALUES("+id+", 'Toyota v4', 'Rouge', 210, 'essence',"+((int)i)+");");
 					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
 					}catch (SQLException sqlException) {
 						sqlException.printStackTrace();
