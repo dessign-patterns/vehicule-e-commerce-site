@@ -18,11 +18,15 @@ public class DBConnection {
             statement = connection.createStatement();
             System.out.println("Connexion a " + DBPath + " avec succès");
 
-            // statement.executeUpdate("drop table if exists automobile");
+            statement.executeUpdate("drop table if exists automobile");
             statement.executeUpdate("create table automobile (id integer, modele string, couleur string, puissance string, espace string, type string)");
 
-            // statement.executeUpdate("drop table if exists scooter");
+            statement.executeUpdate("drop table if exists scooter");
             statement.executeUpdate("create table scooter (id integer, modele string, couleur string, puissance string, type string)");
+            
+            statement.executeUpdate("drop table if exists commande");
+            statement.executeUpdate("create table commande (id integer, vehicule string, montant double, etat string)");
+
         } catch (ClassNotFoundException notFoundException) {
             notFoundException.printStackTrace();
             System.out.println("Erreur de connection 1");

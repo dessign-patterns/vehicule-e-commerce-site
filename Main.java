@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import AbstractFactory.*;
 import BuilderP.*;
+import TemplateMethod.*;
+import FactoryMethod.*;
 import java.sql.Statement;
 public class Main{
     public static void main(String[] args) {
@@ -23,16 +25,15 @@ public class Main{
 			System.out.println("6. Implanter des formulaires HTML a l'aide de widgets");
 			System.out.println("7. representer les societes ");
 			System.out.println("8. Afficher les vehicules du catalogue ");
-			System.out.println("9. Retrouver sequentiellement les vehicules d'un catalogue ");
-			System.out.println("10. Calculer le montant d'une commande ");			
-			System.out.println("11. Exit ");
+			System.out.println("9. Retrouver sequentiellement les vehicules d'un catalogue ");			
+			System.out.println("10. Sortir ");
 
 			do {
 				System.out.print("\n[Request] >  ");
 				choice = number.nextInt();
-				if (choice < 1 || choice >11)
-					System.out.println("Your choice should be between 1 and 11");
-			} while (choice < 1 || choice > 11);
+				if (choice < 1 || choice >10)
+					System.out.println("Your choice should be between 1 and 10");
+			} while (choice < 1 || choice > 10);
 			switch (choice) {
 				case 1: {
 					System.out.println(":================: Creer d'un vehicule :===============:");
@@ -43,6 +44,12 @@ public class Main{
 				case 2: {
 					System.out.println(":================:Construire les liasses de documents necessaires:===============:");
 					construireLiasse(liasseUnique);
+					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
+					break;
+				}
+				case 3: {
+					System.out.println(":================: Passer une commande :===============:");
+					passerCommande(db.getConnection());
 					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
 					break;
 				}
@@ -58,7 +65,7 @@ public class Main{
 
 			}
 
-		} while (choice != 11);
+		} while (choice != 10);
         
         db.disconnect();
     }
@@ -272,5 +279,123 @@ public class Main{
 			}
 
 		} while (choice != 3);
+	}
+	public static void passerCommande(Connection c){
+		FabriqueCommande f1, f2;
+		int choice = 0;
+		Scanner number = new Scanner(System.in);
+		String name;
+		do {
+			System.out.println("-+-+-+-+-+-+ Quel type de commande desirez vous passer ? +-+-+-+-+-+- ");
+			System.out.println("1. Comptant ");
+			System.out.println("2. Credit ");
+			System.out.println("3. Retour ");
+
+			do {
+				System.out.print("\n[Request] >  ");
+				choice = number.nextInt();
+				if (choice < 1 || choice > 3)
+					System.out.println("Your choice should be between 1 and 3");
+			} while (choice < 1 || choice > 3);
+			switch (choice) {
+				case 1: {
+					System.out.println(":================: Comptant :===============:");
+					f1 = new FabriqueCommandeComptant();
+					double mttc, montant = 1000.0;
+					int id = 34343434;
+					try{
+						Statement s = c.createStatement();
+						int res = s.executeUpdate("SELECT modele FROM automobile WHERE id = "+id);
+
+						if (res > 0){
+							name="Peugeot 307";
+						}
+						f1.creerCommande(montant, id);
+						mttc = calculerMontant(montant);
+						s.executeUpdate("INSERT INTO COMMANDE (id, vehicule, montant, etat)"+" VALUES("+id+", 'Toyota v4', "+mttc+",'valide');");
+
+					}catch (SQLException sqlException) {
+						sqlException.printStackTrace();
+						System.out.println("Erreur de connection");
+					}
+					
+					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
+					break;
+				}
+				case 2: {
+					System.out.println(":================: Credit :===============:");
+					f2 = new FabriqueCommandeCredit();
+					double mttc, montant = 1000.0;
+					int id = 34343434;
+					try{
+						Statement s = c.createStatement();
+						int res = s.executeUpdate("SELECT modele FROM automobile WHERE id = "+id);
+
+						if (res > 0){
+							name="Toyota v4";
+						}
+						f2.creerCommande(montant, id);
+						mttc = calculerMontant(montant);
+						s.executeUpdate("INSERT INTO COMMANDE (id, vehicule, montant, etat)"+" VALUES("+id+", 'Toyota v4', "+mttc+",'en cours');");
+
+					}catch (SQLException sqlException) {
+						sqlException.printStackTrace();
+						System.out.println("Erreur de connection");
+					}
+					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
+					break;
+				}
+				default:
+					break;
+
+			}
+
+		} while (choice != 3);
+	}
+	public static double calculerMontant(double m){
+		int choice = 0;
+		double montant;
+		Scanner number = new Scanner(System.in);
+		String name;
+		CommandeC cC,cS;
+		do {
+			System.out.println("-+-+-+-+-+-+ Quel est votre pays de residence ? +-+-+-+-+-+- ");
+			System.out.println("1. Cameroun ");
+			System.out.println("2. Senegal ");
+			System.out.println("3. Retour ");
+
+			do {
+				System.out.print("\n[Request] >  ");
+				choice = number.nextInt();
+				if (choice < 1 || choice > 3)
+					System.out.println("Your choice should be between 1 and 3");
+			} while (choice < 1 || choice > 3);
+			switch (choice) {
+				case 1: {
+					System.out.println(":================: Cameroun :===============:");
+
+					cC = new CommandeCameroun();
+					cC.setMontantHt(m);
+					montant = cC.calculMontantTtc();
+					cC.affiche();
+					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
+					return montant;
+				}
+				case 2: {
+					System.out.println(":================: Senegal :===============:");
+					cC = new CommandeSenegal();
+					cC.setMontantHt(m);
+					montant = cC.calculMontantTtc();
+					cC.affiche();
+					System.out.println(":================: +-+-+-+-+-+-+-+-+ :===============:\n");
+					return montant;
+				}
+				default:
+					break;
+
+			}
+
+		} while (choice != 3);
+		return 0.0;
 	}
 }

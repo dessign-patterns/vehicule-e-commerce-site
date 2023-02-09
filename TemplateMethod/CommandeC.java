@@ -1,13 +1,16 @@
-public abstract class Commande {
+package TemplateMethod;
+
+public abstract class CommandeC {
     protected double montantHt;
     protected double montantTva;
     protected double montantTtc;
 
     protected abstract void calculTva();
 
-    public void calculMontantTtc(){
+    public double calculMontantTtc(){
         this.calculTva();
         montantTtc = montantHt + montantTva;
+        return montantTtc;
     }
 
     public void setMontantHt(double montantHt){
